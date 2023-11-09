@@ -6,3 +6,5 @@ class Post(models.Model):
     draft = models.BooleanField(default=True)
     
 
+    def __str__(self):
+        return self.title 
