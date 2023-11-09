@@ -8,6 +8,7 @@ class Post(models.Model):
     draft = models.BooleanField(default=True)
     publish_date = models.DateTimeField(default=timezone.now)
     tags = TaggableManager()
+    image = models.ImageField(upload_to='post')
 
     
 
