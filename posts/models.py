@@ -14,7 +14,7 @@ class Post(models.Model):
     
     tags = TaggableManager()
     image = models.ImageField(upload_to='post')
-    category =models.ForeignKey('Category',related_name='post_category',on_delete=models.SET_NULL,null=True)
+    category = models.ForeignKey('Category',related_name='post_category',on_delete=models.SET_NULL,null=True)
     
 
     def __str__(self):
@@ -22,7 +22,16 @@ class Post(models.Model):
     
 
 class Category(models.Model):
-    name=models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
 
     def __str__(self):
         return self.name
+
+class Comment(models.Model):
+    post = models.ForeignKey(Post,related_name='comment_post',on_delete=models.CASCADE)
+    user = models.CharField(max_length=50)
+    Comment = models.TextField(max_length=300)
+    created_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return str(self.post)
