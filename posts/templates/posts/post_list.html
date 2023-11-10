@@ -1,0 +1,11 @@
+
+
+
+<h4> Blog </h4>
+<ul>
+{% for post in mohsen %}
+
+   <li> {{post}} - {{post.author}} - {{post.publish_date}} </li>
+
+    {% endfor %}
+</ul>
