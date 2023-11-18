@@ -45,10 +45,18 @@ def edit_post(request,pk):
             myform.save()
             return redirect('/posts/')
     else:
-        form =PostForm(instance=post)
+        form = PostForm(instance=post)
     
     
     return render(request, 'posts/edit.html', {'form':form})
+
+
+def delete_post(request,pk):
+    post = Post.objects.get(id=pk)
+    post.delete()
+    return redirect('/posts/')
+    
+  
 
 
 
