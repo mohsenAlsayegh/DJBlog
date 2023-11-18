@@ -3,6 +3,8 @@ from .models import Post
 from .forms import PostForm
 # Create your views here.
 
+
+#Function based view
 def post_list(request):
     data = Post.objects.all() 
     context = {
@@ -60,7 +62,7 @@ def delete_post(request,pk):
 
 
 
-
+#Class Based View
 
 from django.views.generic import ListView, DetailView, UpdateView, CreateView, DeleteView
 
