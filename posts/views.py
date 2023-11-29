@@ -1,28 +1,45 @@
 from django.shortcuts import render, redirect
-from .models import Post
-from .forms import PostForm
-# Create your views here.
+from .models import Post, Comment
+from .forms import CommentForm, PostForm
 
 
-#Function based view
+
+#Function Based View
+
+#Post select all object form DB
 def post_list(request):
     data = Post.objects.all() 
     context = {
-        'mohsen' : data 
+        'object_list' : data 
     }
     return render(request, 'posts/post_list.html',context)
 
-def post_detail(request,post_id):
-    data = Post.objects.get(id=post_id)
+
+#Post Read from DB (specific page)
+def post_detail(request,pk):
+    data = Post.objects.get(id=pk)
+    comment= Comment.objects.filter(post=data) 
+    
+    #validation of data
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            myform = form.save(commit=False)
+            myform.post = data
+            myform.save()
+    else:
+        form = CommentForm()
 
     context = {
-        'post': data 
+        'post': data,
+        'comments': comment,
+        'form': form
     }
-
     return render(request, 'posts/post_detail.html',context)
 
+
+#Creating new post
 def create_post(request):
-    
     if request.method  == 'POST':
         form = PostForm(request.POST,request.FILES)
         if form.is_valid():
@@ -33,12 +50,14 @@ def create_post(request):
     else:
         form =PostForm()
     
+    return render(request, 'posts/post_form.html', {'form':form})
 
-    return render(request, 'posts/new.html', {'form':form})
 
-
+#Editing new post
 def edit_post(request,pk):
     post = Post.objects.get(id=pk)
+
+    #data 
     if request.method  == 'POST':
         form = PostForm(request.POST,request.FILES,instance=post)
         if form.is_valid():
@@ -48,12 +67,11 @@ def edit_post(request,pk):
             return redirect('/posts/')
     else:
         form = PostForm(instance=post)
-    
-    
     return render(request, 'posts/edit.html', {'form':form})
 
 
-def delete_post(request,pk):
+#Delete exsisting post
+def delete_post(request, pk):
     post = Post.objects.get(id=pk)
     post.delete()
     return redirect('/posts/')
@@ -62,32 +80,3 @@ def delete_post(request,pk):
 
 
 
-#Class Based View
-
-from django.views.generic import ListView, DetailView, UpdateView, CreateView, DeleteView
-
-class Postlist(ListView):   
-    model = Post
-
-class PostDetail(DetailView):
-    model = Post
-  
-class AddPost(CreateView):
-    model = Post 
-    fields = '__all__'
-    success_url = '/posts/'
-
-class AddPost(CreateView):
-    model = Post 
-    fields = '__all__'
-    success_url = '/posts/'
-
-class EditPost(UpdateView):
-    model = Post 
-    fields = '__all__'
-    success_url = '/posts/'
-    template_name = 'posts/edit.html'
-
-class DeletePost(DeleteView):
-    model = Post
-    success_url = '/posts/'
