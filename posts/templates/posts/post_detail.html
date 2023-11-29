@@ -1,3 +1,5 @@
+{% load django_bootstrap5 %}
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -25,17 +27,19 @@
             <h4>Comments({{comments|length}})</h4>
             <ul>
                 {% for comment in comments %}
-                    <li>{{comment.user}} - {{comment.comment}}</li>
-                {%empty%}
-                <li> there are no comments to display</li>
+                <li>{{ comment.user }} - {{ comment.comment }}</li>
+                {% empty %}
+                <li>No comments.</li>
                 {% endfor %}
             </ul>
 
             <h4>Add New Comment</h4>
             <form method="post">
                 {% csrf_token %}
-                {{form}}
+                {% bootstrap_form form %}
+                {% bootstrap_button button_type="submit" content="Add comment" %}
                 <input type="submit" value="add comment">
+              
             </form>
                 
         </div>
