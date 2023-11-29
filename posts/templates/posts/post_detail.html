@@ -24,12 +24,12 @@
 
         </div>
         <div>
-            <h4>Comments({{comments|length}})</h4>
+            <h4>Comments({{ comment|length}})</h4>
             <ul>
                 {% for comment in comments %}
-                <li>{{ comment.user }} - {{ comment.comment }}</li>
+                    <li>{{ comment.user }} - {{ comment.Comment }}</li>
                 {% empty %}
-                <li>No comments.</li>
+                    <li>No comments.</li>
                 {% endfor %}
             </ul>
 
