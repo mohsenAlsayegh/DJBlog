@@ -67,7 +67,7 @@ def edit_post(request,pk):
             return redirect('/posts/')
     else:
         form = PostForm(instance=post)
-    return render(request, 'posts/edit.html', {'form':form})
+    return render(request, 'posts/post_form.html', {'form':form})
 
 
 #Delete exsisting post
