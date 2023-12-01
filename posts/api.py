@@ -14,3 +14,14 @@ def post_detail_api(request,id):
     posts = Post.objects.get(id=id)
     data = PostSerializers(posts).data
     return Response({'data' :data})
+
+from rest_framework import generics
+
+class PostListAPI(generics.ListAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializers
+
+
+class PostDeatilAPI(generics.RetrieveAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializers
